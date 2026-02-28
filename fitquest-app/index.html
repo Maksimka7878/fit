@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FitQuest | Прокачай себя</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6d28d9">
+    <meta name="description" content="FitQuest — геймифицируй своё похудение. Квесты, уровни, реальные советы.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Background Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <div class="app-wrapper">
+        <!-- ===== TOP HEADER ===== -->
+        <header class="top-header glass-card">
+            <div class="header-left">
+                <div class="avatar-wrap">
+                    <div class="avatar" id="avatar-el">🏹</div>
+                    <div class="level-pill" id="player-level">Lvl 1</div>
+                </div>
+                <div class="header-info">
+                    <div class="username-row">
+                        <h1 class="username" id="display-username">Герой</h1>
+                        <span class="rank-badge" id="player-rank">Ленивый Кот 🐱</span>
+                    </div>
+                    <div class="xp-bar-mini">
+                        <div class="xp-bar-fill" id="xp-fill"></div>
+                    </div>
+                    <span class="xp-label" id="xp-text">0 / 100 XP</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="stat-chip gold-chip">
+                    <span>💰</span>
+                    <span id="player-gold">0</span>
+                </div>
+                <div class="stat-chip streak-chip" id="streak-widget">
+                    <span>🔥</span>
+                    <span id="player-streak">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== BOTTOM NAV ===== -->
+        <nav class="bottom-nav glass-card">
+            <button class="nav-btn active" data-tab="dashboard" id="nav-dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Главная</span>
+            </button>
+            <button class="nav-btn" data-tab="quests" id="nav-quests">
+                <span class="nav-icon">⚔️</span>
+                <span class="nav-label">Квесты</span>
+                <span class="nav-badge" id="quests-badge" style="display:none"></span>
+            </button>
+            <button class="nav-btn" data-tab="stats" id="nav-stats">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Статистика</span>
+            </button>
+            <button class="nav-btn" data-tab="shop" id="nav-shop">
+                <span class="nav-icon">🛒</span>
+                <span class="nav-label">Магазин</span>
+            </button>
+        </nav>
+
+        <!-- ===== TABS CONTENT ===== -->
+        <main class="tabs-container">
+
+            <!-- ========== TAB: DASHBOARD ========== -->
+            <section class="tab-content active" id="tab-dashboard">
+
+                <!-- Daily Progress Card -->
+                <div class="section-card summary-card">
+                    <div class="summary-row">
+                        <div class="summary-stat">
+                            <span class="summary-value" id="dash-done">0</span>
+                            <span class="summary-key">выполнено</span>
+                        </div>
+                        <div class="summary-progress-wrap">
+                            <svg class="ring-svg" viewBox="0 0 80 80">
+                                <circle class="ring-bg" cx="40" cy="40" r="32" />
+                                <circle class="ring-fill" id="ring-fill" cx="40" cy="40" r="32"
+                                    stroke-dasharray="201 201" stroke-dashoffset="201" />
+                            </svg>
+                            <span class="ring-pct" id="ring-pct">0%</span>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-value" id="dash-total">8</span>
+                            <span class="summary-key">всего сегодня</span>
+                        </div>
+                    </div>
+                    <div class="summary-label" id="dash-label">Начните первый квест дня!</div>
+                </div>
+
+                <!-- Quick quests (first 4 today) -->
+                <div class="section-header">
+                    <h2 class="section-title">Сегодняшние квесты</h2>
+                    <button class="link-btn" data-goto="quests">Все →</button>
+                </div>
+                <div class="quests-list" id="dashboard-quests">
+                    <!-- injected -->
+                </div>
+
+                <!-- Tips / Motivation Block -->
+                <div class="section-header">
+                    <h2 class="section-title">Совет дня</h2>
+                </div>
+                <div class="tip-of-day glass-card" id="tip-of-day">
+                    <!-- injected -->
+                </div>
+
+                <!-- Rank Progress -->
+                <div class="section-card rank-card">
+                    <div class="rank-card-header">
+                        <span class="rank-card-icon" id="rank-icon">🐱</span>
+                        <div>
+                            <div class="rank-card-title" id="rank-card-name">Ленивый Кот</div>
+                            <div class="rank-card-sub" id="rank-card-next">Следующий ранг на уровне 5</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="rank-progress-fill" style="width:0%">
+                            <div class="progress-glow"></div>
+                        </div>
+                    </div>
+                    <div class="rank-progress-labels">
+                        <span id="rank-lvl-current">Lvl 1</span>
+                        <span id="rank-lvl-next">Lvl 5</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== TAB: QUESTS ========== -->
+            <section class="tab-content" id="tab-quests">
+                <!-- Category Filter -->
+                <div class="category-scroll" id="category-pills">
+                    <!-- injected -->
+                </div>
+
+                <!-- Quest Count -->
+                <div class="quests-meta">
+                    <span id="quest-meta-text">8 квестов на сегодня</span>
+                    <span class="quest-meta-done" id="quest-meta-done">0 выполнено</span>
+                </div>
+
+                <!-- Quests List -->
+                <div class="quests-list" id="all-quests-list">
+                    <!-- injected -->
+                </div>
+            </section>
+
+            <!-- ========== TAB: STATS ========== -->
+            <section class="tab-content" id="tab-stats">
+                <!-- Overview Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon">🔥</div>
+                        <div class="stat-card-val" id="stat-streak">0</div>
+                        <div class="stat-card-label">Streak (дней)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">⭐</div>
+                        <div class="stat-card-val" id="stat-total-xp">0</div>
+                        <div class="stat-card-label">Суммарно XP</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">✅</div>
+                        <div class="stat-card-val" id="stat-quests-done">0</div>
+                        <div class="stat-card-label">Квестов сделано</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">💰</div>
+                        <div class="stat-card-val" id="stat-total-gold">0</div>
+                        <div class="stat-card-label">Золото всего</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">📅</div>
+                        <div class="stat-card-val" id="stat-days">0</div>
+                        <div class="stat-card-label">Дней в игре</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">🏆</div>
+                        <div class="stat-card-val" id="stat-alldays">0</div>
+                        <div class="stat-card-label">Идеальных дней</div>
+                    </div>
+                </div>
+
+                <!-- Weekly XP Chart -->
+                <div class="section-card chart-card">
+                    <h3 class="chart-title">XP за эту неделю</h3>
+                    <div class="bar-chart" id="weekly-chart">
+                        <!-- injected -->
+                    </div>
+                    <div class="bar-labels">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span>
+                        <span>Пт</span><span>Сб</span><span>Вс</span>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="section-header">
+                    <h2 class="section-title">Достижения</h2>
+                </div>
+                <div class="achievements-list" id="achievements-list">
+                    <!-- injected -->
+                </div>
+            </section>
+
+            <!-- ========== TAB: SHOP ========== -->
+            <section class="tab-content" id="tab-shop">
+                <div class="shop-balance glass-card">
+                    <div class="shop-balance-info">
+                        <span class="shop-balance-label">Ваш баланс</span>
+                        <span class="shop-balance-val">💰 <span id="shop-gold-display">0</span></span>
+                    </div>
+                    <div class="shop-balance-hint">Зарабатывайте золото выполняя квесты</div>
+                </div>
+
+                <!-- Shop items -->
+                <div class="shop-items-grid" id="shop-items-container">
+                    <!-- injected -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ============================= MODALS ============================= -->
+
+    <!-- Welcome Modal -->
+    <div class="modal hidden" id="welcome-modal">
+        <div class="modal-box glass-card glowing-border">
+            <div class="modal-hero-icon">🏹</div>
+            <h2 class="modal-title">Добро пожаловать<br>в <span class="gradient-text">FitQuest!</span></h2>
+            <p class="modal-subtitle">Геймифицируй своё похудение.<br>Квесты, уровни, реальные научные советы.</p>
+            <div class="input-group">
+                <input type="text" id="username-input" class="custom-input" placeholder="Введите ваш никнейм..."
+                    maxlength="15" autocomplete="off">
+            </div>
+            <button class="primary-btn" id="save-username-btn">Начать приключение 🚀</button>
+        </div>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div class="modal hidden" id="level-modal">
+        <div class="modal-box glass-card glowing-border level-up-box">
+            <div class="modal-hero-icon bounce-icon">🌟</div>
+            <h2 class="modal-title gradient-text">LEVEL UP!</h2>
+            <p class="modal-subtitle">Вы достигли уровня</p>
+            <div class="big-level" id="new-level-text">2</div>
+            <div class="reward-chip" id="new-rank-text">Новый титул</div>
+            <button class="primary-btn" id="close-modal-btn">Продолжить путь ⚔️</button>
+        </div>
+    </div>
+
+    <!-- Tip Modal -->
+    <div class="modal hidden" id="tip-modal">
+        <div class="modal-box glass-card tip-modal-box">
+            <div class="tip-modal-header">
+                <h3 class="tip-modal-title" id="tip-modal-title">💡 Совет</h3>
+                <button class="modal-close-x" id="close-tip-btn">✕</button>
+            </div>
+            <p class="tip-modal-body" id="tip-modal-body"></p>
+            <button class="primary-btn" id="tip-got-it-btn">Понял, применю! 💪</button>
+        </div>
+    </div>
+
+    <!-- Quest Complete Notification -->
+    <div class="toast hidden" id="toast">
+        <span id="toast-text">Квест выполнен! +50 XP</span>
+    </div>
+
+    <!-- Buy Success Modal -->
+    <div class="modal hidden" id="buy-modal">
+        <div class="modal-box glass-card">
+            <div class="modal-hero-icon">🛍️</div>
+            <h2 class="modal-title gradient-text">Куплено!</h2>
+            <p class="modal-subtitle" id="buy-modal-text">Наслаждайтесь наградой!</p>
+            <button class="primary-btn" id="close-buy-btn">Отлично! 🎉</button>
+        </div>
+    </div>
+
+    <script src="js/storage.js" defer></script>
+    <script src="js/gameLogic.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => { });
+            });
+        }
+    </script>
+</body>
+
+</html>
