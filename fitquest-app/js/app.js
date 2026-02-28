@@ -2,8 +2,14 @@
 //  FitQuest SaaS — Main Application
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    const game = new GameLogic();
+document.addEventListener('DOMContentLoaded', async () => {
+    let game;
+    if (StorageAPI.getUsername()) {
+        document.body.style.opacity = '0.6';
+        await StorageAPI.fetchFromCloud();
+        document.body.style.opacity = '1';
+    }
+    game = new GameLogic();
 
     // ── State ────────────────────────────────────────────────
     let activeTab = 'dashboard';
@@ -503,9 +509,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    saveUsernameBtn.addEventListener('click', () => {
+    saveUsernameBtn.addEventListener('click', async () => {
         const name = usernameInput.value.trim() || 'Герой';
-        game.setUsername(name);
+        saveUsernameBtn.textContent = 'Загрузка...';
+        StorageAPI.saveUsername(name);
+
+        const hasCloudData = await StorageAPI.fetchFromCloud();
+        if (hasCloudData) {
+            game = new GameLogic(); // re-initialize with cloud data
+        } else {
+            game.setUsername(name);
+            StorageAPI.syncToCloud();
+        }
+
         welcomeModal.classList.add('hidden');
         renderHeader();
         renderDashboard();
