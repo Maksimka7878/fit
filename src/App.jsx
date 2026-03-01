@@ -2,20 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGame } from './hooks/useGame';
 import { GameConfig } from './lib/gameConfig';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, CheckSquare, BarChart2, ShoppingBag, Zap, Droplet, Moon, Coffee, Shield, Target } from 'lucide-react';
-
-// Icons mapping for Lucide
-const IconMap = {
-  '⚡': <Zap className="w-5 h-5" />,
-  '💧': <Droplet className="w-5 h-5" />,
-  '🌙': <Moon className="w-5 h-5" />,
-  '🥗': <Coffee className="w-5 h-5" />,
-  '🏃': <Activity className="w-5 h-5" />,
-  '🏋️': <Shield className="w-5 h-5" />,
-  '🧘': <Activity className="w-5 h-5" />,
-  '🧠': <Target className="w-5 h-5" />,
-  '🔥': <Zap className="w-5 h-5 text-orange-400" />
-};
+import { Activity, CheckSquare, BarChart2, ShoppingBag } from 'lucide-react';
 
 export default function App() {
   const { state, quests, username, isLoaded, getRankInfo, getNextRankInfo, getXpForNextLevel, toggleQuest, buyReward, saveUser } = useGame();
@@ -23,7 +10,6 @@ export default function App() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [nameInput, setNameInput] = useState('');
 
-  // Modals state
   const [activeTip, setActiveTip] = useState(null);
   const [levelUpData, setLevelUpData] = useState(null);
   const [toast, setToast] = useState(null);
@@ -37,14 +23,13 @@ export default function App() {
   useEffect(() => {
     const handleQuestCompleted = (e) => {
       const { gainedXp, gainedGold, leveledUp, newLevel } = e.detail;
-      setToast(\`+\${gainedXp} XP, +\${gainedGold} 💰\`);
+      const msg = '+' + gainedXp + ' XP, +' + gainedGold + ' 💰';
+      setToast(msg);
       setTimeout(() => setToast(null), 2500);
-
       if (leveledUp) {
         setTimeout(() => setLevelUpData(newLevel), 500);
       }
     };
-    
     window.addEventListener('questCompleted', handleQuestCompleted);
     return () => window.removeEventListener('questCompleted', handleQuestCompleted);
   }, []);
@@ -59,7 +44,7 @@ export default function App() {
 
   return (
     <div className="pb-24 max-w-md mx-auto min-h-screen relative">
-      {/* Header Profile */}
+      {/* Header */}
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-white/10 px-4 py-3">
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-3">
@@ -80,31 +65,31 @@ export default function App() {
             </div>
           </div>
         </div>
-        
+
         {/* XP Bar */}
         <div className="relative h-2 bg-slate-800 rounded-full overflow-hidden">
-          <motion.div 
+          <motion.div
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-violet-500"
             initial={{ width: 0 }}
-            animate={{ width: `${ xpPct } % ` }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            animate={{ width: xpPct + '%' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
         </div>
         <div className="text-[10px] text-slate-400 text-right mt-1">{state.xp} / {xpNeeded} XP</div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main */}
       <main className="p-4">
         <AnimatePresence mode="wait">
           {activeTab === 'dashboard' && <Dashboard key="dash" state={state} quests={quests} toggleQuest={toggleQuest} rank={rank} getNextRankInfo={getNextRankInfo} openTip={setActiveTip} />}
           {activeTab === 'quests' && <Quests key="quests" quests={quests} toggleQuest={toggleQuest} openTip={setActiveTip} />}
-          {activeTab === 'stats' && <Stats key="stats" state={state} quests={quests} />}
+          {activeTab === 'stats' && <Stats key="stats" state={state} />}
           {activeTab === 'shop' && <Shop key="shop" state={state} buyReward={buyReward} setToast={setToast} />}
         </AnimatePresence>
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-xl border-t border-white/10 safe-area-pb">
+      {/* Bottom Nav */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-xl border-t border-white/10">
         <div className="max-w-md mx-auto flex justify-around p-2">
           <NavBtn icon={<Activity />} label="Главная" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
           <NavBtn icon={<CheckSquare />} label="Квесты" active={activeTab === 'quests'} onClick={() => setActiveTab('quests')} badge={questsUnfinished > 0 ? questsUnfinished : null} />
@@ -118,17 +103,17 @@ export default function App() {
         {showWelcome && (
           <Modal title="Добро пожаловать в FitQuest!">
             <p className="text-slate-300 text-sm mb-4">Как нам вас называть, герой?</p>
-            <input 
+            <input
               className="w-full bg-slate-800 border-none rounded-xl p-3 text-white mb-4 outline-none focus:ring-2 focus:ring-blue-500"
               value={nameInput}
               onChange={e => setNameInput(e.target.value)}
               placeholder="Введите имя..."
               autoFocus
             />
-            <button 
+            <button
               className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-colors"
               onClick={() => {
-                if(nameInput.trim()) {
+                if (nameInput.trim()) {
                   saveUser(nameInput.trim());
                   setShowWelcome(false);
                 }
@@ -141,10 +126,8 @@ export default function App() {
 
         {activeTip && (
           <Modal title={activeTip.tip.title} onClose={() => setActiveTip(null)}>
-            <div className="text-sm text-slate-300 leading-relaxed mb-6">
-              {activeTip.tip.body}
-            </div>
-            <button 
+            <div className="text-sm text-slate-300 leading-relaxed mb-6">{activeTip.tip.body}</div>
+            <button
               className="w-full bg-blue-600/20 text-blue-400 font-semibold py-3 rounded-xl hover:bg-blue-600/30 transition-colors"
               onClick={() => setActiveTip(null)}
             >
@@ -164,7 +147,7 @@ export default function App() {
                 {getRankInfo(levelUpData).title}
               </div>
             </div>
-            <button 
+            <button
               className="w-full bg-amber-500/20 text-amber-500 font-semibold py-3 rounded-xl hover:bg-amber-500/30 transition-colors"
               onClick={() => setLevelUpData(null)}
             >
@@ -174,10 +157,10 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Toast Notification */}
+      {/* Toast */}
       <AnimatePresence>
         {toast && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
@@ -191,13 +174,14 @@ export default function App() {
   );
 }
 
-// -------------------------------------------------------------
-// Sub-Components
-// -------------------------------------------------------------
+// ─── Sub-components ────────────────────────────────────────────
 
 function NavBtn({ icon, label, active, onClick, badge }) {
   return (
-    <button onClick={onClick} className={`relative flex flex - col items - center justify - center w - 16 h - 14 transition - colors ${ active? 'text-blue-400': 'text-slate-500 hover:text-slate-400' }`}>
+    <button
+      onClick={onClick}
+      className={'relative flex flex-col items-center justify-center w-16 h-14 transition-colors ' + (active ? 'text-blue-400' : 'text-slate-500 hover:text-slate-400')}
+    >
       {icon}
       <span className="text-[10px] font-medium mt-1">{label}</span>
       {badge && <span className="absolute top-1 right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{badge}</span>}
@@ -207,12 +191,12 @@ function NavBtn({ icon, label, active, onClick, badge }) {
 
 function Modal({ title, children, onClose }) {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
       onClick={onClose}
     >
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }}
         className="glass-panel w-full max-w-sm rounded-[24px] p-6 relative"
         onClick={e => e.stopPropagation()}
@@ -224,29 +208,31 @@ function Modal({ title, children, onClose }) {
   );
 }
 
-// --- Dashboard Tab ---
+// ─── Dashboard ─────────────────────────────────────────────────
 function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip }) {
   const doneCount = quests.filter(q => q.completed).length;
   const pct = quests.length > 0 ? (doneCount / quests.length) * 100 : 0;
   const nextRank = getNextRankInfo(state.level);
-  
-  // Pick random tip among incomplete
-  const incompleteQuests = quests.filter(q => !q.completed && q.tip);
-  const tipQuest = incompleteQuests.length > 0 ? incompleteQuests[0] : quests.find(q => q.tip);
+  const incompleteWithTip = quests.filter(q => !q.completed && q.tip);
+  const tipQuest = incompleteWithTip.length > 0 ? incompleteWithTip[0] : quests.find(q => q.tip);
+
+  const rankPct = nextRank
+    ? Math.min(100, ((state.level - rank.level) / (nextRank.level - rank.level)) * 100)
+    : 100;
 
   return (
     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-6">
-      
-      {/* Daily Progress Ring */}
+
+      {/* Progress Ring */}
       <div className="glass-panel rounded-3xl p-6 flex items-center gap-6">
         <div className="relative w-24 h-24 shrink-0 flex items-center justify-center">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="40" className="stroke-slate-800" strokeWidth="8" fill="none" />
-            <motion.circle 
-              cx="50" cy="50" r="40" 
-              className="stroke-blue-500" 
-              strokeWidth="10" 
-              fill="none" 
+            <motion.circle
+              cx="50" cy="50" r="40"
+              className="stroke-blue-500"
+              strokeWidth="10"
+              fill="none"
               strokeLinecap="round"
               initial={{ strokeDasharray: '251.2', strokeDashoffset: '251.2' }}
               animate={{ strokeDashoffset: 251.2 - (251.2 * pct) / 100 }}
@@ -264,7 +250,7 @@ function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip 
         </div>
       </div>
 
-      {/* Main Focus / Quick Quests */}
+      {/* Today's quests */}
       <div>
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">Задачи на сегодня</h3>
@@ -278,10 +264,11 @@ function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip 
 
       {/* Rank Card */}
       <div className="glass-panel rounded-3xl p-6 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-4 opacity-10 text-6xl group-hover:scale-110 transition-transform">{rank.title.split(' ').pop()}</div>
+        <div className="absolute top-0 right-0 p-4 opacity-10 text-6xl group-hover:scale-110 transition-transform">
+          {rank.title.split(' ').pop()}
+        </div>
         <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Текущий ранг</div>
         <div className="text-2xl font-bold mb-4" style={{ color: rank.color }}>{rank.title}</div>
-        
         {nextRank ? (
           <>
             <div className="flex justify-between text-xs text-slate-400 mb-2">
@@ -289,10 +276,7 @@ function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip 
               <span>Lvl {nextRank.level}</span>
             </div>
             <div className="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
-              <div 
-                className="h-full bg-white/30" 
-                style={{ width: `${ Math.min(100, ((state.level - rank.level) / (nextRank.level - rank.level)) * 100) } % ` }}
-              />
+              <div className="h-full bg-white/30" style={{ width: rankPct + '%' }} />
             </div>
             <div className="text-xs text-slate-500">Следующий ранг на {nextRank.level} уровне</div>
           </>
@@ -301,7 +285,7 @@ function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip 
         )}
       </div>
 
-      {/* Tip of the day */}
+      {/* Tip */}
       {tipQuest && (
         <div className="glass-panel p-5 rounded-3xl flex flex-col gap-3 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
@@ -312,39 +296,50 @@ function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip 
               <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{tipQuest.tip.body}</p>
             </div>
           </div>
-          <button onClick={() => openTip(tipQuest)} className="text-xs text-amber-500 font-semibold self-start ml-8 hover:underline">Читать полностью →</button>
+          <button onClick={() => openTip(tipQuest)} className="text-xs text-amber-500 font-semibold self-start ml-8 hover:underline">
+            Читать полностью →
+          </button>
         </div>
       )}
-
     </motion.div>
   );
 }
 
-// --- Quest Card ---
+// ─── Quest Card ────────────────────────────────────────────────
 function QuestCard({ quest, toggleQuest, openTip }) {
-  const diffColors = { easy: 'text-emerald-400 bg-emerald-400/10', medium: 'text-blue-400 bg-blue-400/10', hard: 'text-rose-400 bg-rose-400/10' };
-  const diffLabels = { easy: 'Легко', medium: 'Cредне', hard: 'Сложно' };
+  const diffColors = {
+    easy: 'text-emerald-400 bg-emerald-400/10',
+    medium: 'text-blue-400 bg-blue-400/10',
+    hard: 'text-rose-400 bg-rose-400/10'
+  };
+  const diffLabels = { easy: 'Легко', medium: 'Средне', hard: 'Сложно' };
 
   return (
-    <motion.div 
+    <motion.div
       layout
-      className={`glass - panel p - 4 rounded - 2xl flex gap - 4 items - center transition - colors ${ quest.completed ? 'opacity-60 bg-slate-800/20' : '' }`}
+      className={'glass-panel p-4 rounded-2xl flex gap-4 items-center transition-colors ' + (quest.completed ? 'opacity-60 bg-slate-800/20' : '')}
       onClick={() => toggleQuest(quest.id)}
     >
-      <div className={`w - 12 h - 12 shrink - 0 flex items - center justify - center text - xl rounded - full transition - colors ${ quest.completed ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/5' }`}>
+      <div className={'w-12 h-12 shrink-0 flex items-center justify-center text-xl rounded-full transition-colors ' + (quest.completed ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/5')}>
         {quest.completed ? '✓' : quest.icon}
       </div>
       <div className="flex-1 min-w-0">
-        <h4 className={`font - bold text - sm mb - 0.5 truncate ${ quest.completed ? 'line-through text-slate-400' : 'text-white' }`}>{quest.title}</h4>
+        <h4 className={'font-bold text-sm mb-0.5 truncate ' + (quest.completed ? 'line-through text-slate-400' : 'text-white')}>
+          {quest.title}
+        </h4>
         <p className="text-[11px] text-slate-400 mb-2 truncate">{quest.desc}</p>
         <div className="flex gap-2 text-[10px] font-semibold">
           <span className="text-blue-300 bg-blue-500/20 px-2 py-0.5 rounded-full">+{quest.xp} XP</span>
           <span className="text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full">+{quest.gold} 💰</span>
-          {!quest.completed && <span className={`px - 2 py - 0.5 rounded - full ${ diffColors[quest.difficulty]}`}>{diffLabels[quest.difficulty]}</span>}
+          {!quest.completed && (
+            <span className={'px-2 py-0.5 rounded-full ' + (diffColors[quest.difficulty] || '')}>
+              {diffLabels[quest.difficulty]}
+            </span>
+          )}
         </div>
       </div>
       {quest.tip && !quest.completed && (
-        <button 
+        <button
           onClick={(e) => { e.stopPropagation(); openTip(quest); }}
           className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 shrink-0"
         >
@@ -355,7 +350,7 @@ function QuestCard({ quest, toggleQuest, openTip }) {
   );
 }
 
-// --- Quests Tab ---
+// ─── Quests Tab ───────────────────────────────────────────────
 function Quests({ quests, toggleQuest, openTip }) {
   const [activeCat, setActiveCat] = useState('all');
   const filtered = activeCat === 'all' ? quests : quests.filter(q => q.category === activeCat);
@@ -364,17 +359,18 @@ function Quests({ quests, toggleQuest, openTip }) {
     <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="font-bold text-xl">Все квесты</h2>
-        <span className="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">{quests.filter(q=>q.completed).length} / {quests.length}</span>
+        <span className="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">
+          {quests.filter(q => q.completed).length} / {quests.length}
+        </span>
       </div>
-      
-      {/* Categories Horizontal Scroll */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 snap-x">
+
+      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
         {GameConfig.CATEGORIES.map(cat => (
-          <button 
+          <button
             key={cat.id}
             onClick={() => setActiveCat(cat.id)}
-            className={`shrink - 0 px - 4 py - 2 rounded - full text - xs font - semibold flex items - center gap - 1.5 transition - all snap - start
-              ${ activeCat === cat.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}
+            className={'shrink-0 px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all snap-start ' +
+              (activeCat === cat.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white/5 text-slate-400 hover:bg-white/10')}
           >
             <span>{cat.icon}</span> {cat.label}
           </button>
@@ -388,9 +384,7 @@ function Quests({ quests, toggleQuest, openTip }) {
               В этой категории сегодня ничего нет
             </motion.div>
           ) : (
-            filtered.map(q => (
-              <QuestCard key={q.id} quest={q} toggleQuest={toggleQuest} openTip={openTip} />
-            ))
+            filtered.map(q => <QuestCard key={q.id} quest={q} toggleQuest={toggleQuest} openTip={openTip} />)
           )}
         </AnimatePresence>
       </div>
@@ -398,16 +392,16 @@ function Quests({ quests, toggleQuest, openTip }) {
   );
 }
 
-// --- Stats Tab ---
+// ─── Stats Tab ────────────────────────────────────────────────
 function Stats({ state }) {
-  const days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-  const maxVal = Math.max(...(state.weeklyXp || [0,0,0,0,0,0,0]), 1);
+  const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  const weeklyXp = state.weeklyXp || [0, 0, 0, 0, 0, 0, 0];
+  const maxVal = Math.max(...weeklyXp, 1);
   const todayIdx = (() => { const d = new Date().getDay(); return d === 0 ? 6 : d - 1; })();
 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="space-y-6">
-      
-      {/* Mini stats cards */}
+
       <div className="grid grid-cols-2 gap-3">
         <div className="glass-panel p-4 rounded-3xl flex flex-col items-center justify-center">
           <div className="text-2xl mb-1">🔥</div>
@@ -424,18 +418,21 @@ function Stats({ state }) {
       <div className="glass-panel p-5 rounded-3xl">
         <h3 className="font-bold mb-4">Опыт за неделю</h3>
         <div className="flex justify-between items-end h-32 pt-4">
-          {(state.weeklyXp || [0,0,0,0,0,0,0]).map((val, i) => {
+          {weeklyXp.map((val, i) => {
             const h = (val / maxVal) * 100;
+            const isToday = i === todayIdx;
             return (
               <div key={i} className="flex flex-col items-center gap-2 flex-1 relative group">
                 <div className="opacity-0 group-hover:opacity-100 absolute -top-6 text-[10px] font-bold text-blue-400 transition-opacity">{val}</div>
                 <div className="w-full max-w-[12px] h-24 bg-slate-800 rounded-full flex items-end overflow-hidden">
-                  <motion.div 
-                    initial={{ height: 0 }} animate={{ height: `${ h }% ` }} transition={{ delay: i * 0.1, type: "spring" }}
-                    className={`w - full rounded - full ${ i === todayIdx ? 'bg-gradient-to-t from-blue-600 to-blue-400' : 'bg-slate-600' } `}
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{ height: h + '%' }}
+                    transition={{ delay: i * 0.1, type: 'spring' }}
+                    className={'w-full rounded-full ' + (isToday ? 'bg-gradient-to-t from-blue-600 to-blue-400' : 'bg-slate-600')}
                   />
                 </div>
-                <span className={`text - [10px] font - semibold ${ i === todayIdx ? 'text-blue-400' : 'text-slate-500' } `}>{days[i]}</span>
+                <span className={'text-[10px] font-semibold ' + (isToday ? 'text-blue-400' : 'text-slate-500')}>{days[i]}</span>
               </div>
             );
           })}
@@ -443,33 +440,26 @@ function Stats({ state }) {
       </div>
 
       <div className="glass-panel p-5 rounded-3xl">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-sm text-slate-400 uppercase tracking-widest">Абсолютные показатели</h3>
-        </div>
+        <h3 className="font-bold text-sm text-slate-400 uppercase tracking-widest mb-4">Абсолютные показатели</h3>
         <div className="space-y-4">
-          <div className="flex justify-between items-center pb-3 border-b border-white/5">
-            <span className="text-sm">Всего заработано XP</span>
-            <span className="font-bold text-blue-400 text-lg">{state.totalXpEarned}</span>
-          </div>
-          <div className="flex justify-between items-center pb-3 border-b border-white/5">
-            <span className="text-sm">Всего заработано 💰</span>
-            <span className="font-bold text-amber-400 text-lg">{state.totalGoldEarned}</span>
-          </div>
-          <div className="flex justify-between items-center pb-3 border-b border-white/5">
-            <span className="text-sm">Всего дней в приложении</span>
-            <span className="font-bold text-white text-lg">{state.totalDaysActive}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm">Идеальных дней (100%)</span>
-            <span className="font-bold text-emerald-400 text-lg">{state.completedAllDays}</span>
-          </div>
+          {[
+            { label: 'Всего заработано XP', val: state.totalXpEarned, color: 'text-blue-400' },
+            { label: 'Всего заработано 💰', val: state.totalGoldEarned, color: 'text-amber-400' },
+            { label: 'Всего дней в приложении', val: state.totalDaysActive, color: 'text-white' },
+            { label: 'Идеальных дней (100%)', val: state.completedAllDays, color: 'text-emerald-400' },
+          ].map((item, i, arr) => (
+            <div key={item.label} className={'flex justify-between items-center ' + (i < arr.length - 1 ? 'pb-3 border-b border-white/5' : '')}>
+              <span className="text-sm">{item.label}</span>
+              <span className={'font-bold text-lg ' + item.color}>{item.val}</span>
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>
   );
 }
 
-// --- Shop Tab ---
+// ─── Shop Tab ─────────────────────────────────────────────────
 function Shop({ state, buyReward, setToast }) {
   const categories = [
     { key: 'fun', label: '🎉 Маленькие радости' },
@@ -479,7 +469,7 @@ function Shop({ state, buyReward, setToast }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-6">
-      
+
       <div className="glass-panel p-6 rounded-3xl text-center">
         <div className="text-slate-400 text-sm mb-1">Доступно золота</div>
         <div className="text-4xl font-black text-amber-500 flex justify-center items-center gap-2">
@@ -491,8 +481,7 @@ function Shop({ state, buyReward, setToast }) {
       <div className="space-y-8">
         {categories.map(cat => {
           const items = GameConfig.REWARDS.filter(r => r.category === cat.key);
-          if(items.length === 0) return null;
-          
+          if (items.length === 0) return null;
           return (
             <div key={cat.key}>
               <h3 className="font-bold text-lg mb-3 px-1">{cat.label}</h3>
@@ -500,32 +489,37 @@ function Shop({ state, buyReward, setToast }) {
                 {items.map(reward => {
                   const canAfford = state.gold >= reward.cost;
                   return (
-                    <div key={reward.id} className={`glass - panel p - 4 rounded - 2xl flex gap - 4 items - center ${ !canAfford ? 'opacity-50 grayscale select-none' : '' } `}>
+                    <div
+                      key={reward.id}
+                      className={'glass-panel p-4 rounded-2xl flex gap-4 items-center ' + (!canAfford ? 'opacity-50 grayscale select-none' : '')}
+                    >
                       <div className="text-3xl shrink-0">{reward.icon}</div>
                       <div className="flex-1 min-w-0">
                         <div className="font-bold text-sm text-white mb-0.5 truncate">{reward.title}</div>
                         <div className="text-xs text-slate-400 truncate mb-1.5">{reward.desc}</div>
-                        <div className={`text - xs font - bold ${ canAfford ? 'text-amber-400' : 'text-slate-500' } `}>Стоимость: {reward.cost} 💰</div>
+                        <div className={'text-xs font-bold ' + (canAfford ? 'text-amber-400' : 'text-slate-500')}>
+                          Стоимость: {reward.cost} 💰
+                        </div>
                       </div>
-                      <button 
+                      <button
                         disabled={!canAfford}
                         onClick={() => {
                           const res = buyReward(reward.id);
-                          if(res) setToast(`Куплено: ${ res.title } !Наслаждайтесь 🎉`);
+                          if (res) setToast('Куплено: ' + res.title + '! Наслаждайтесь 🎉');
                         }}
-                        className={`shrink - 0 px - 4 py - 2 rounded - xl text - xs font - bold transition - transform active: scale - 95 ${ canAfford ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' : 'bg-slate-800 text-slate-500' } `}
+                        className={'shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-transform active:scale-95 ' +
+                          (canAfford ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' : 'bg-slate-800 text-slate-500')}
                       >
                         {canAfford ? 'Купить' : 'Мало 💰'}
                       </button>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </div>
-          )
+          );
         })}
       </div>
-      
     </motion.div>
   );
 }
