@@ -9,6 +9,7 @@ const GameConfig = {
     // Quest categories
     CATEGORIES: [
         { id: 'all', label: 'Все', icon: '⚡' },
+        { id: 'workout', label: 'Тренировка', icon: '🔥' },
         { id: 'hydration', label: 'Гидрация', icon: '💧' },
         { id: 'sleep', label: 'Сон', icon: '🌙' },
         { id: 'nutrition', label: 'Питание', icon: '🥗' },
@@ -20,6 +21,106 @@ const GameConfig = {
 
     // 35 quests across all categories — each with a real expert tip
     QUEST_POOL: [
+        // === WORKOUTS OF THE DAY (HIGH XP, REAL ROUTINES) ===
+        {
+            id: 'wod_fullbody_1',
+            category: 'workout',
+            title: '🔥 Тренировка: Фулбоди с весом тела',
+            desc: 'Базовая программа для всего тела: присед, отжимания, пресс',
+            icon: '🦍',
+            difficulty: 'hard',
+            xp: 150,
+            gold: 75,
+            tip: {
+                title: '🦍 Тренировка Дня: Фулбоди 30 мин',
+                body: 'Выполни 4 круга без отдыха (отдых 1 мин между кругами): 15 приседаний, 10-15 отжиманий от пола (или с колен), 15 скручиваний на пресс, 30 сек планка. Эта тренировка задействует 80% мышц, повышает тестостерон и ускоряет метаболизм на 24 часа. Сохраняй темп!',
+            }
+        },
+        {
+            id: 'wod_legs_core',
+            category: 'workout',
+            title: '🔥 Тренировка: Железные ноги и Кор',
+            desc: 'Взрывная тренировка на низ тела + глубокие мышцы пресса',
+            icon: '🦵',
+            difficulty: 'medium',
+            xp: 120,
+            gold: 60,
+            tip: {
+                title: '🦵 Тренировка Дня: Ноги + Пресс',
+                body: 'Работай в формате суперсетов (2 упражнения подряд без отдыха): Суперсет 1 (Выпады по 12 на ногу + 20 скручиваний) х3 круга. Суперсет 2 (Ягодичный мостик 15 раз + Планка 45 сек) х3 круга. Ноги — самая большая мышечная группа, поэтому это сильнейший стимул для жиросжигания.',
+            }
+        },
+        {
+            id: 'wod_hiit_fatburn',
+            category: 'workout',
+            title: '🔥 Тренировка: Жиросжигающий HIIT',
+            desc: 'Максимальный пульс и море пота за 20 минут',
+            icon: '⚡',
+            difficulty: 'hard',
+            xp: 200,
+            gold: 100,
+            tip: {
+                title: '⚡ Тренировка Дня: Убойный HIIT',
+                body: 'Схема "Табата": 20 сек работы / 10 сек отдых. Упражнения: 1. Бёрпи. 2. Бег на месте с высоким подниманием колен. 3. Прыжки "Джеки". 4. Альпинист (бег в планке). Выполни по 2 раунда каждого упр-я в круге, всего 3 круга. Эффект "дожигания" калорий продлится весь следующий день!',
+            }
+        },
+        {
+            id: 'wod_chest_back',
+            category: 'workout',
+            title: '🔥 Тренировка: Широкая спина и грудь',
+            desc: 'Антагонисты верха тела: тяни-толкай',
+            icon: '💪',
+            difficulty: 'hard',
+            xp: 140,
+            gold: 70,
+            tip: {
+                title: '💪 Тренировка Дня: Грудь + Спина',
+                body: 'Чередуем жимовые и тяговые движения. Если есть турник: 5-8 подтягиваний (или австралийские подтягивания) чередуем с 15 отжиманиями. 4 подхода. Овальная тренировка верха сделает осанку ровной (тяга) и прокачает объемы (жим). Отдыхай 90 секунд между подходами.',
+            }
+        },
+        {
+            id: 'wod_cardio_5k',
+            category: 'workout',
+            title: '🔥 Тренировка: Кардио забег 5км',
+            desc: 'Бег, эллипс или быстрая ходьба на дистанцию',
+            icon: '🏃',
+            difficulty: 'hard',
+            xp: 160,
+            gold: 80,
+            tip: {
+                title: '🏃 Тренировка Дня: Гонка на 5км',
+                body: 'Задача — преодолеть 5 километров самым быстрым для тебя способом (бег > велосипед > эллипс > ходьба). Держи пульс в зоне 130-150 ударов в минуту. Это тренировка сердца (гипертрофия левого желудочка) и прямой удар по висцеральному жиру.',
+            }
+        },
+        {
+            id: 'wod_abs_15m',
+            category: 'workout',
+            title: '🔥 Тренировка: Идеальный пресс',
+            desc: 'Специальная программа на кубики и удержание корсета',
+            icon: '🎯',
+            difficulty: 'medium',
+            xp: 100,
+            gold: 50,
+            tip: {
+                title: '🎯 Тренировка Дня: 15 минут пресса',
+                body: '1 мин работы на каждое: 1. Обычные скручивания. 2. Велосипед (локоть к колену). 3. Подъём ног лежа. 4. Русские скручивания (касание пола сбоку). 5. Планка на локтях. Повторить цикл 3 раза (строго без отдыха между упражнениями, только между циклами по 30 сек). Будет гореть!',
+            }
+        },
+        {
+            id: 'wod_functional',
+            category: 'workout',
+            title: '🔥 Тренировка: Звериная функциональность',
+            desc: 'Сложные координационные движения и баланс',
+            icon: '🤸‍♂️',
+            difficulty: 'hard',
+            xp: 180,
+            gold: 90,
+            tip: {
+                title: '🤸‍♂️ Тренировка Дня: Зверобаза',
+                body: '30 сек ходьба медведем (на прямых руках и ногах), 15 выпрыгиваний из приседа, 20 выпадов с прыжком (прыжком меняем ногу). 4 круга. Такие функциональные движения тренируют фасции, ловкость, ЦНС и связки. Подходит для тех, кто хочет не просто выглядеть круто, но и двигаться так же.',
+            }
+        },
+
         // === HYDRATION ===
         {
             id: 'water_2l',
@@ -511,15 +612,32 @@ const GameConfig = {
         },
     ],
 
-    // Ranks based on level
+    // Massive Rank progression up to Level 100
     RANKS: [
         { level: 1, title: 'Ленивый Кот 🐱', color: '#94a3b8' },
-        { level: 5, title: 'Начинающий Искатель 🔰', color: '#4ade80' },
-        { level: 10, title: 'Ученик Зала 🥈', color: '#60a5fa' },
-        { level: 15, title: 'Опытный Атлет 🥇', color: '#f59e0b' },
-        { level: 20, title: 'Мастер Стали ⚔️', color: '#a78bfa' },
-        { level: 30, title: 'Элита Фитнеса 💎', color: '#ec4899' },
-        { level: 50, title: 'Полубог Стального Тела 🔥', color: '#f97316' },
+        { level: 3, title: 'Пробудившийся 🥱', color: '#cbd5e1' },
+        { level: 5, title: 'Новичок на старте 🔰', color: '#4ade80' },
+        { level: 8, title: 'Упорный Искатель 🧭', color: '#22c55e' },
+        { level: 12, title: 'Ученик Зала 🥈', color: '#60a5fa' },
+        { level: 15, title: 'Адепт Дисциплины ⏱️', color: '#3b82f6' },
+        { level: 18, title: 'Разрушитель Леней 🔨', color: '#2563eb' },
+        { level: 22, title: 'Железный Любитель 🏋️', color: '#facc15' },
+        { level: 26, title: 'Опытный Атлет 🥇', color: '#f59e0b' },
+        { level: 30, title: 'Воин Света ⚔️', color: '#d97706' },
+        { level: 35, title: 'Мастер Стали 🗡️', color: '#a78bfa' },
+        { level: 40, title: 'Архитектор Тела 📐', color: '#8b5cf6' },
+        { level: 45, title: 'Гладиатор Арены 🏺', color: '#7c3aed' },
+        { level: 50, title: 'Элита Фитнеса 💎', color: '#ec4899' },
+        { level: 55, title: 'Киборг без устали 🤖', color: '#db2777' },
+        { level: 60, title: 'Спартанец 🛡️', color: '#be185d' },
+        { level: 65, title: 'Вестник Рельефа ⚡', color: '#f43f5e' },
+        { level: 70, title: 'Титан Зала 🪨', color: '#e11d48' },
+        { level: 75, title: 'Амбассадор Силы 🦾', color: '#be123c' },
+        { level: 80, title: 'Легенда Спорта 🌠', color: '#0ea5e9' },
+        { level: 85, title: 'Полубог Выносливости 🔥', color: '#f97316' },
+        { level: 90, title: 'Олимпиец 🏔️', color: '#ea580c' },
+        { level: 95, title: 'Владыка Метаболизма 👑', color: '#c2410c' },
+        { level: 100, title: 'Бог Мистера Олимпии 🏆', color: '#ef4444' },
     ],
 
     // Enhanced Shop
@@ -577,16 +695,22 @@ class GameLogic {
         };
     }
 
-    // Pick 8 quests per day (2 easy, 3 medium, 3 hard) across different categories
+    // Select 1 Main Workout + 5-7 supporting quests
     generateDailyQuests() {
         const pool = [...GameConfig.QUEST_POOL];
         const shuffle = arr => arr.sort(() => Math.random() - 0.5);
 
-        const easy = shuffle(pool.filter(q => q.difficulty === 'easy')).slice(0, 3);
-        const medium = shuffle(pool.filter(q => q.difficulty === 'medium')).slice(0, 3);
-        const hard = shuffle(pool.filter(q => q.difficulty === 'hard')).slice(0, 2);
+        // Guaranteed 1 Main Workout Of The Day
+        const workouts = shuffle(pool.filter(q => q.category === 'workout'));
+        const mainWorkout = workouts[0];
 
-        return [...easy, ...medium, ...hard].map(q => ({ ...q, completed: false }));
+        // Supporting habits
+        const regularPool = pool.filter(q => q.category !== 'workout');
+        const easy = shuffle(regularPool.filter(q => q.difficulty === 'easy')).slice(0, 3);
+        const medium = shuffle(regularPool.filter(q => q.difficulty === 'medium')).slice(0, 3);
+        const hard = shuffle(regularPool.filter(q => q.difficulty === 'hard')).slice(0, 1);
+
+        return [mainWorkout, ...easy, ...medium, ...hard].map(q => ({ ...q, completed: false }));
     }
 
     checkNewDay() {
