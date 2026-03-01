@@ -6,38 +6,38 @@ import { Activity, CheckSquare, BarChart2, ShoppingBag, Zap, Droplet, Moon, Coff
 
 // Icons mapping for Lucide
 const IconMap = {
-    '⚡': <Zap className="w-5 h-5" />,
-    '💧': <Droplet className="w-5 h-5" />,
-    '🌙': <Moon className="w-5 h-5" />,
-    '🥗': <Coffee className="w-5 h-5" />,
-    '🏃': <Activity className="w-5 h-5" />,
-    '🏋️': <Shield className="w-5 h-5" />,
-    '🧘': <Activity className="w-5 h-5" />,
-    '🧠': <Target className="w-5 h-5" />,
-    '🔥': <Zap className="w-5 h-5 text-orange-400" />
+  '⚡': <Zap className="w-5 h-5" />,
+  '💧': <Droplet className="w-5 h-5" />,
+  '🌙': <Moon className="w-5 h-5" />,
+  '🥗': <Coffee className="w-5 h-5" />,
+  '🏃': <Activity className="w-5 h-5" />,
+  '🏋️': <Shield className="w-5 h-5" />,
+  '🧘': <Activity className="w-5 h-5" />,
+  '🧠': <Target className="w-5 h-5" />,
+  '🔥': <Zap className="w-5 h-5 text-orange-400" />
 };
 
 export default function App() {
-    const { state, quests, username, isLoaded, getRankInfo, getNextRankInfo, getXpForNextLevel, toggleQuest, buyReward, saveUser } = useGame();
-    const [activeTab, setActiveTab] = useState('dashboard');
-    const [showWelcome, setShowWelcome] = useState(false);
-    const [nameInput, setNameInput] = useState('');
+  const { state, quests, username, isLoaded, getRankInfo, getNextRankInfo, getXpForNextLevel, toggleQuest, buyReward, saveUser } = useGame();
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [nameInput, setNameInput] = useState('');
 
-    // Modals state
-    const [activeTip, setActiveTip] = useState(null);
-    const [levelUpData, setLevelUpData] = useState(null);
-    const [toast, setToast] = useState(null);
+  // Modals state
+  const [activeTip, setActiveTip] = useState(null);
+  const [levelUpData, setLevelUpData] = useState(null);
+  const [toast, setToast] = useState(null);
 
-    useEffect(() => {
-        if (isLoaded && !username) {
-            setShowWelcome(true);
-        }
-    }, [isLoaded, username]);
+  useEffect(() => {
+    if (isLoaded && !username) {
+      setShowWelcome(true);
+    }
+  }, [isLoaded, username]);
 
-    useEffect(() => {
-        const handleQuestCompleted = (e) => {
-            const { gainedXp, gainedGold, leveledUp, newLevel } = e.detail;
-            setToast(\`+\${gainedXp} XP, +\${gainedGold} 💰\`);
+  useEffect(() => {
+    const handleQuestCompleted = (e) => {
+      const { gainedXp, gainedGold, leveledUp, newLevel } = e.detail;
+      setToast(\`+\${gainedXp} XP, +\${gainedGold} 💰\`);
       setTimeout(() => setToast(null), 2500);
 
       if (leveledUp) {
@@ -86,7 +86,7 @@ export default function App() {
           <motion.div 
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-violet-500"
             initial={{ width: 0 }}
-            animate={{ width: \`\${xpPct}%\` }}
+            animate={{ width: `${ xpPct } % ` }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           />
         </div>
@@ -197,7 +197,7 @@ export default function App() {
 
 function NavBtn({ icon, label, active, onClick, badge }) {
   return (
-    <button onClick={onClick} className={\`relative flex flex-col items-center justify-center w-16 h-14 transition-colors \${active ? 'text-blue-400' : 'text-slate-500 hover:text-slate-400'}\`}>
+    <button onClick={onClick} className={`relative flex flex - col items - center justify - center w - 16 h - 14 transition - colors ${ active? 'text-blue-400': 'text-slate-500 hover:text-slate-400' }`}>
       {icon}
       <span className="text-[10px] font-medium mt-1">{label}</span>
       {badge && <span className="absolute top-1 right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{badge}</span>}
@@ -291,7 +291,7 @@ function Dashboard({ state, quests, toggleQuest, rank, getNextRankInfo, openTip 
             <div className="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
               <div 
                 className="h-full bg-white/30" 
-                style={{ width: \`\${Math.min(100, ((state.level - rank.level) / (nextRank.level - rank.level)) * 100)}%\` }}
+                style={{ width: `${ Math.min(100, ((state.level - rank.level) / (nextRank.level - rank.level)) * 100) } % ` }}
               />
             </div>
             <div className="text-xs text-slate-500">Следующий ранг на {nextRank.level} уровне</div>
@@ -328,19 +328,19 @@ function QuestCard({ quest, toggleQuest, openTip }) {
   return (
     <motion.div 
       layout
-      className={\`glass-panel p-4 rounded-2xl flex gap-4 items-center transition-colors \${quest.completed ? 'opacity-60 bg-slate-800/20' : ''}\`}
+      className={`glass - panel p - 4 rounded - 2xl flex gap - 4 items - center transition - colors ${ quest.completed ? 'opacity-60 bg-slate-800/20' : '' }`}
       onClick={() => toggleQuest(quest.id)}
     >
-      <div className={\`w-12 h-12 shrink-0 flex items-center justify-center text-xl rounded-full transition-colors \${quest.completed ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/5'}\`}>
+      <div className={`w - 12 h - 12 shrink - 0 flex items - center justify - center text - xl rounded - full transition - colors ${ quest.completed ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/5' }`}>
         {quest.completed ? '✓' : quest.icon}
       </div>
       <div className="flex-1 min-w-0">
-        <h4 className={\`font-bold text-sm mb-0.5 truncate \${quest.completed ? 'line-through text-slate-400' : 'text-white'}\`}>{quest.title}</h4>
+        <h4 className={`font - bold text - sm mb - 0.5 truncate ${ quest.completed ? 'line-through text-slate-400' : 'text-white' }`}>{quest.title}</h4>
         <p className="text-[11px] text-slate-400 mb-2 truncate">{quest.desc}</p>
         <div className="flex gap-2 text-[10px] font-semibold">
           <span className="text-blue-300 bg-blue-500/20 px-2 py-0.5 rounded-full">+{quest.xp} XP</span>
           <span className="text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full">+{quest.gold} 💰</span>
-          {!quest.completed && <span className={\`px-2 py-0.5 rounded-full \${diffColors[quest.difficulty]}\`}>{diffLabels[quest.difficulty]}</span>}
+          {!quest.completed && <span className={`px - 2 py - 0.5 rounded - full ${ diffColors[quest.difficulty]}`}>{diffLabels[quest.difficulty]}</span>}
         </div>
       </div>
       {quest.tip && !quest.completed && (
@@ -373,8 +373,8 @@ function Quests({ quests, toggleQuest, openTip }) {
           <button 
             key={cat.id}
             onClick={() => setActiveCat(cat.id)}
-            className={\`shrink-0 px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all snap-start
-              \${activeCat === cat.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white/5 text-slate-400 hover:bg-white/10'}\`}
+            className={`shrink - 0 px - 4 py - 2 rounded - full text - xs font - semibold flex items - center gap - 1.5 transition - all snap - start
+              ${ activeCat === cat.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}
           >
             <span>{cat.icon}</span> {cat.label}
           </button>
@@ -431,11 +431,11 @@ function Stats({ state }) {
                 <div className="opacity-0 group-hover:opacity-100 absolute -top-6 text-[10px] font-bold text-blue-400 transition-opacity">{val}</div>
                 <div className="w-full max-w-[12px] h-24 bg-slate-800 rounded-full flex items-end overflow-hidden">
                   <motion.div 
-                    initial={{ height: 0 }} animate={{ height: \`\${h}%\` }} transition={{ delay: i * 0.1, type: "spring" }}
-                    className={\`w-full rounded-full \${i === todayIdx ? 'bg-gradient-to-t from-blue-600 to-blue-400' : 'bg-slate-600'}\`} 
+                    initial={{ height: 0 }} animate={{ height: `${ h }% ` }} transition={{ delay: i * 0.1, type: "spring" }}
+                    className={`w - full rounded - full ${ i === todayIdx ? 'bg-gradient-to-t from-blue-600 to-blue-400' : 'bg-slate-600' } `}
                   />
                 </div>
-                <span className={\`text-[10px] font-semibold \${i === todayIdx ? 'text-blue-400' : 'text-slate-500'}\`}>{days[i]}</span>
+                <span className={`text - [10px] font - semibold ${ i === todayIdx ? 'text-blue-400' : 'text-slate-500' } `}>{days[i]}</span>
               </div>
             );
           })}
@@ -500,20 +500,20 @@ function Shop({ state, buyReward, setToast }) {
                 {items.map(reward => {
                   const canAfford = state.gold >= reward.cost;
                   return (
-                    <div key={reward.id} className={\`glass-panel p-4 rounded-2xl flex gap-4 items-center \${!canAfford ? 'opacity-50 grayscale select-none' : ''}\`}>
+                    <div key={reward.id} className={`glass - panel p - 4 rounded - 2xl flex gap - 4 items - center ${ !canAfford ? 'opacity-50 grayscale select-none' : '' } `}>
                       <div className="text-3xl shrink-0">{reward.icon}</div>
                       <div className="flex-1 min-w-0">
                         <div className="font-bold text-sm text-white mb-0.5 truncate">{reward.title}</div>
                         <div className="text-xs text-slate-400 truncate mb-1.5">{reward.desc}</div>
-                        <div className={\`text-xs font-bold \${canAfford ? 'text-amber-400' : 'text-slate-500'}\`}>Стоимость: {reward.cost} 💰</div>
+                        <div className={`text - xs font - bold ${ canAfford ? 'text-amber-400' : 'text-slate-500' } `}>Стоимость: {reward.cost} 💰</div>
                       </div>
                       <button 
                         disabled={!canAfford}
                         onClick={() => {
                           const res = buyReward(reward.id);
-                          if(res) setToast(\`Куплено: \${res.title}! Наслаждайтесь 🎉\`);
+                          if(res) setToast(`Куплено: ${ res.title } !Наслаждайтесь 🎉`);
                         }}
-                        className={\`shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-transform active:scale-95 \${canAfford ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' : 'bg-slate-800 text-slate-500'}\`}
+                        className={`shrink - 0 px - 4 py - 2 rounded - xl text - xs font - bold transition - transform active: scale - 95 ${ canAfford ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' : 'bg-slate-800 text-slate-500' } `}
                       >
                         {canAfford ? 'Купить' : 'Мало 💰'}
                       </button>
